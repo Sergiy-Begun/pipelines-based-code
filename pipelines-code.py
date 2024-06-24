@@ -328,7 +328,7 @@ class setting_data_types(BaseEstimator, TransformerMixin):
 
 
 
-main_file_path = "/Users/sergiybegun/Documents/study-in-kaggle/KaggleX-Skill-Assessment-Challenge/"
+main_file_path = ".../study-in-kaggle/KaggleX-Skill-Assessment-Challenge/"
 
 test_file_path = main_file_path + "test.csv"
 
