@@ -12,7 +12,6 @@ import numpy as np
 import pandas as pd
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
-from xgboost import XGBRegressor
 from sklearn.compose import make_column_selector
 
 
@@ -48,26 +47,6 @@ preprocessor = ColumnTransformer(
     ] ).set_output(transform="pandas")
 
 
-model = XGBRegressor()
-
-# Bundle preprocessing and modeling code in a pipeline
-#pipeline_based_data_processing = Pipeline(steps=[
-#    ("preprocessor", preprocessor),
-#    ("model", model)
-#    ],verbose=True)
-
-
-#y = dataframe.Percentage.fillna(value=dataframe.Percentage.mean())
-
-#X = dataframe.drop("Percentage", axis=1)
-
-
-
 results = preprocessor.fit_transform(dataframe)
-
-#print(X)
-#print('blia')
-
-#print(y)
 
 print(results)
