@@ -84,7 +84,6 @@ and there https://github.com/scikit-learn/scikit-learn/blob/2621573e6/sklearn/pr
 
 """
 
-
 # definition of custom functions and classes
 
 class feature_extraction_tool(BaseEstimator, TransformerMixin):
@@ -245,10 +244,6 @@ class feature_extraction_tool(BaseEstimator, TransformerMixin):
         X = X.drop(self.columns_to_remove_after, axis=1)
         return pd.DataFrame(X)
 
-#    def predict(self, X):
-#        return np.full(shape=X.shape[0], fill_value=[self.first_main_data_fitting, self.first_test_data_fitting])
-
-
 class existing_numerical_data_cleaning_tool(BaseEstimator, TransformerMixin):
 
     def fit(self, X, y=None):
@@ -279,9 +274,6 @@ class existing_numerical_data_cleaning_tool(BaseEstimator, TransformerMixin):
                 X.at[current_row, "price"] = np.nan
         
         return pd.DataFrame(X)
-
-#    def predict(self, X):
-#        return np.full(shape=X.shape[0],fill_value=X)
 
 def test_training_equivalentaizer(X, main_data_frame):
     # this function should be called before models training
@@ -322,10 +314,6 @@ class setting_data_types(BaseEstimator, TransformerMixin):
             if col_name in self.numerical_columns:
                 X[[col_name,]] = X[[col_name,]].astype('float64')
         return pd.DataFrame(X)
-
-#    def predict(self, X):
-#        return np.full(shape=X.shape[0], fill_value=self.main_data_frame)
-
 
 
 main_file_path = ".../study-in-kaggle/KaggleX-Skill-Assessment-Challenge/"
@@ -376,7 +364,6 @@ temp_data_frame_extra.to_csv(extra_data_modified_file_path)
 
 temp_data_frame_train.to_csv(train_modified_file_path)
 
-
 # we need to modify test data for prediction too
 
 test_modified_df = copy.deepcopy(test_df.dropna(axis=0, how="all"))
@@ -387,9 +374,6 @@ main_data_df = pd.concat(
     [temp_data_frame_train, temp_data_frame_extra], ignore_index=True)
 
 contaminated_numerical_cols = ["price", "milage"]
-current_first_main_data_fitting = True
-current_first_test_data_fitting = True
-
 
 # filling gaps in dataset
 numerical_transformer = SimpleImputer(strategy="most_frequent").set_output(transform="pandas") # "most_frequent", "median," or "mean"
@@ -458,8 +442,6 @@ y_full = copy.deepcopy(main_data_df.num__price)
 X_full = copy.deepcopy(main_data_df.drop(["num__price"], axis=1)).sort_index(axis=1)
 
 
-
-
 y_cheap_full = copy.deepcopy(main_data_df[(main_data_df.num__Cheap_Cars == 1.0)].num__price)
 X_cheap_full = copy.deepcopy(main_data_df[(main_data_df.num__Cheap_Cars == 1.0)].drop(["num__price"], axis=1)).sort_index(axis=1)
 
@@ -476,13 +458,6 @@ y_super_car_full = copy.deepcopy(main_data_df[(main_data_df.num__Super_Cars == 1
 X_super_car_full = copy.deepcopy(main_data_df[(main_data_df.num__Super_Cars == 1.0)].drop(["num__price"], axis=1)).sort_index(axis=1)
 
 
-
-
-
-
-
-
-
 y_Cheap_Cars_classifier_full = copy.deepcopy(main_data_df.num__Cheap_Cars)
 X_Cheap_Cars_classifier_full = copy.deepcopy(main_data_df.drop(["num__price", "num__Cheap_Cars", "num__Average_Class_Cars", "num__Luxury_Cars", "num__Super_Cars"], axis=1)).sort_index(axis=1)
 
@@ -494,7 +469,6 @@ X_Luxury_Cars_Cars_classifier_full = copy.deepcopy(main_data_df.drop(["num__pric
 
 y_Super_Cars_classifier_full = copy.deepcopy(main_data_df.num__Super_Cars)
 X_Super_Cars_Cars_classifier_full = copy.deepcopy(main_data_df.drop(["num__price", "num__Cheap_Cars", "num__Average_Class_Cars", "num__Luxury_Cars", "num__Super_Cars"], axis=1)).sort_index(axis=1)
-
 
 
 y_Cheap_Cars_classifier_test = copy.deepcopy(test_modified_df.num__Cheap_Cars)
@@ -509,13 +483,8 @@ X_Luxury_Cars_Cars_classifier_test = copy.deepcopy(test_modified_df.drop(["id", 
 y_Super_Cars_classifier_test = copy.deepcopy(test_modified_df.num__Super_Cars)
 X_Super_Cars_Cars_classifier_test = copy.deepcopy(test_modified_df.drop(["id", "num__price", "num__Cheap_Cars", "num__Average_Class_Cars", "num__Luxury_Cars", "num__Super_Cars"], axis=1)).sort_index(axis=1)
 
-
-
-
-
 # Break off validation set from training data
 # X_train, X_valid, y_train, y_valid = train_test_split(X_full, y_full, train_size=0.8, test_size=0.2, random_state=0)
-
 
 # Define model
 
@@ -543,7 +512,6 @@ super_car_pipeline_based_data_fitting = Pipeline(steps=[
     ("model", XGBRegressor(n_estimators=1000, learning_rate=0.05, n_jobs=8, enable_categorical=True))
     ])
 
-
 # Bundle preprocessing and modeling code in a pipeline
 full_range_pipeline_based_data_fitting = Pipeline(steps=[
     ('scaler', StandardScaler()),
@@ -553,27 +521,19 @@ full_range_pipeline_based_data_fitting = Pipeline(steps=[
 print("cheap_full_fit_stage")
 cheap_pipeline_based_data_fitting.fit(X_cheap_full,y_cheap_full)
 
-
 print("average_class_full_fit_stage")
 average_class_pipeline_based_data_fitting.fit(X_average_class_full,y_average_class_full)
-
 
 print("luxury_full_fit_stage")
 luxury_pipeline_based_data_fitting.fit(X_luxury_full,y_luxury_full)
 
-
 print("super_car_full_fit_stage")
 super_car_pipeline_based_data_fitting.fit(X_super_car_full,y_super_car_full)
-
 
 print("full_range_full_fit_stage")
 full_range_pipeline_based_data_fitting.fit(X_full,y_full)
 
-
-
 model = XGBRegressor(n_estimators=1000, learning_rate=0.05, n_jobs=8)
-
-
 
 # Bundle preprocessing and modeling code in a pipeline
 pipeline_based_data_fitting = Pipeline(steps=[
