@@ -240,7 +240,7 @@ class feature_extraction_tool(BaseEstimator, TransformerMixin):
                 X.at[current_row, "Engine_Cyl"] = np.nan
                 X.at[current_row, "Engine_Type"] = np.nan
 
-        # removing unnecessary columns after feature extraction is finished to avoid data duplication on categorical columns digitalization study
+        # removing unnecessary columns after feature extraction is finished to avoid data duplication on categorical columns digitalization stage
         X = X.drop(self.columns_to_remove_after, axis=1)
         return pd.DataFrame(X)
 
